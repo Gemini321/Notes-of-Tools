@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>矩阵及其运算.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="matlab%E7%9A%84%E7%9F%A9%E9%98%B5%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97">MatLab的矩阵及其运算</h1>
+<h2 id="%E5%8F%98%E9%87%8F">变量</h2>
+<p>与C/C++类似，赋值时使用<code>variable = value</code>，使用分号';'分隔语句。
+特殊变量如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">变量名</th>
+<th style="text-align:center">意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ans</td>
+<td style="text-align:center">默认返回上一次操作的结果</td>
+</tr>
+<tr>
+<td style="text-align:center">eps</td>
+<td style="text-align:center">浮点数的相对误差</td>
+</tr>
+<tr>
+<td style="text-align:center">i, j</td>
+<td style="text-align:center">虚数单位，定义为 $i^2 = j^2 = -1$</td>
+</tr>
+<tr>
+<td style="text-align:center">Inf</td>
+<td style="text-align:center">无穷大</td>
+</tr>
+<tr>
+<td style="text-align:center">NaN</td>
+<td style="text-align:center">表示不定值</td>
+</tr>
+<tr>
+<td style="text-align:center">pi</td>
+<td style="text-align:center">圆周率</td>
+</tr>
+</tbody>
+</table>
+<p>在命令行中输入<code>who</code>可以获取当前已使用的所有变量名，<code>whos</code>则显示更多关于内存和大小的信息；<code>clear (variable)</code>表示清楚variable变量的值，未指定
+表示清除所有变量的值。</p>
+<h2 id="%E6%93%8D%E4%BD%9C%E7%AC%A6">操作符</h2>
+<p>常见操作符见<a href="https://www.w3cschool.cn/matlab/matlab-bufy28gd.html">该网站</a>。</p>
+<p>常见命令及函数见<a href="https://www.w3cschool.cn/matlab/matlab-by7428gf.html">该网站</a></p>
+<h2 id="%E6%95%B0%E5%80%BC%E6%A0%BC%E5%BC%8F">数值格式</h2>
+<pre class="hljs"><code><div>format long <span class="hljs-comment">% 显示小数点后16位</span>
+x = <span class="hljs-number">7</span> + <span class="hljs-number">10</span>/<span class="hljs-number">3</span> + <span class="hljs-number">5</span> ^ <span class="hljs-number">1.2</span> <span class="hljs-comment">% x = 17.231981640639408</span>
+
+format short <span class="hljs-comment">% 显示小数点后4位（默认）</span>
+x = <span class="hljs-number">7</span> + <span class="hljs-number">10</span>/<span class="hljs-number">3</span> + <span class="hljs-number">5</span> ^ <span class="hljs-number">1.2</span> <span class="hljs-comment">% x = 17.2320</span>
+
+format bank <span class="hljs-comment">% 显示小数点后2位</span>
+daily_wage = <span class="hljs-number">177.45</span>;
+weekly_wage = daily_wage * <span class="hljs-number">6</span> <span class="hljs-comment">% weekly_wage = 1064.70</span>
+
+format short e <span class="hljs-comment">% 指数形式显示小数点后4位</span>
+<span class="hljs-number">4.678</span> * <span class="hljs-number">4.9</span>    <span class="hljs-comment">% ans = 2.2922e+01</span>
+
+format <span class="hljs-built_in">rat</span>  <span class="hljs-comment">% 显示距离该值最接近的有理式</span>
+<span class="hljs-number">4.678</span> * <span class="hljs-number">4.9</span> <span class="hljs-comment">% 2063/90</span>
+</div></code></pre>
+<h2 id="%E5%88%9B%E5%BB%BA%E5%90%91%E9%87%8F%E4%B8%8E%E7%9F%A9%E9%98%B5">创建向量与矩阵</h2>
+<p>MatLab中允许创建两种类型的向量：行向量和列向量。</p>
+<pre class="hljs"><code><div><span class="hljs-comment">% 直接产生法</span>
+r = [<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>];           <span class="hljs-comment">% 创建行向量</span>
+s = [<span class="hljs-number">1</span>; <span class="hljs-number">2</span>; <span class="hljs-number">3</span>; <span class="hljs-number">4</span>; <span class="hljs-number">5</span>];       <span class="hljs-comment">% 创建列向量</span>
+m = [<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>; <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span>; <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">9</span>]; <span class="hljs-comment">% 创建3x3矩阵</span>
+
+<span class="hljs-comment">% 向量法</span>
+r = <span class="hljs-number">1</span>:<span class="hljs-number">2</span>:<span class="hljs-number">10</span>; <span class="hljs-comment">% 初始值为1，步长为2，最大值为10的向量（值域[1, 10]）</span>
+
+<span class="hljs-comment">% 函数法</span>
+m = [];       <span class="hljs-comment">% 空矩阵</span>
+m = <span class="hljs-built_in">ones</span>(<span class="hljs-number">5</span>);  <span class="hljs-comment">% 5x5的全1矩阵（只提供一个元素n时，默认为nxn矩阵）</span>
+m = eyes(<span class="hljs-number">5</span>);  <span class="hljs-comment">% 5x5的单位矩阵</span>
+m = <span class="hljs-built_in">zeros</span>(<span class="hljs-number">5</span>); <span class="hljs-comment">% 5x5的全0矩阵</span>
+m = <span class="hljs-built_in">rand</span>(<span class="hljs-number">5</span>);  <span class="hljs-comment">% [0,1]随机分布的5x5矩阵</span>
+m = <span class="hljs-number">10</span> + <span class="hljs-built_in">sqrt</span>(<span class="hljs-number">1</span>/<span class="hljs-number">100</span>) .* <span class="hljs-built_in">randn</span>(<span class="hljs-number">5</span>, <span class="hljs-number">5</span>); <span class="hljs-comment">% 均值为10，标准差为1/100的5x5正态分布矩阵</span>
+</div></code></pre>
+<p>注意：在MatLab中的切片为闭区间，即<code>r = 1: 2</code>$\Leftrightarrow$<code>r = [1, 2]</code></p>
+<h2 id="%E7%9F%A9%E9%98%B5%E5%85%83%E7%B4%A0%E5%BC%95%E7%94%A8">矩阵元素引用</h2>
+<p>在MatLab中矩阵元素的引用使用'()'：</p>
+<pre class="hljs"><code><div><span class="hljs-comment">% 下标引用</span>
+A = [<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>; <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span>; <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">9</span>; <span class="hljs-number">10</span> <span class="hljs-number">11</span> <span class="hljs-number">12</span>];
+b = A(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">% 取矩阵中坐标为(1, 2)的元素，其中行列均从1开始计数</span>
+c = A(<span class="hljs-number">1</span>, :); <span class="hljs-comment">% 取矩阵的第一行</span>
+d = A(:)     <span class="hljs-comment">% 将A的每一列取出合并为列向量</span>
+
+<span class="hljs-comment">% 向量引用</span>
+vr = [<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>];
+vc = [<span class="hljs-number">2</span> <span class="hljs-number">3</span>];
+new_A = A(vr, vc); # vr x vc作笛卡尔积产生的坐标构成新的矩阵
+</div></code></pre>
+<h2 id="%E7%9F%A9%E9%98%B5%E6%93%8D%E4%BD%9C">矩阵操作</h2>
+<pre class="hljs"><code><div><span class="hljs-comment">% 矩阵合并</span>
+A = [<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>];
+B = [<span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span>];
+C = [A, B];
+C = [A B];
+C = <span class="hljs-built_in">cat</span>(<span class="hljs-number">2</span>, A, B); <span class="hljs-comment">% C = horzcat(A, B);</span>
+C = [A; B];
+C = <span class="hljs-built_in">cat</span>(<span class="hljs-number">1</span>, A, B); <span class="hljs-comment">% C = vertcat(A, B);</span>
+
+<span class="hljs-comment">% 矩阵转置</span>
+A_trav = A';
+
+<span class="hljs-comment">% 矩阵计算</span>
+C = A + B;
+C = A - B;
+C = A * B;  <span class="hljs-comment">% 矩阵乘法</span>
+C = A .* B; <span class="hljs-comment">% 矩阵点乘(element-wise)</span>
+C = A / B;  <span class="hljs-comment">% 矩阵除法</span>
+C = A ./ B; <span class="hljs-comment">% 矩阵点除（B中元素作除数）</span>
+C = A.\ B;  <span class="hljs-comment">% 矩阵点除（A中元素作除数）</span>
+C = A ^ c;  <span class="hljs-comment">% 标量幂</span>
+C = A .^ B; <span class="hljs-comment">% A矩阵对应元素取幂</span>
+C = A &gt;= B; <span class="hljs-comment">% A与B逐元素比较，生成01矩阵</span>
+C = ~A;     <span class="hljs-comment">% A取非</span>
+C = A | B;  <span class="hljs-comment">% A、B取并</span>
+C = A &amp; B;  <span class="hljs-comment">% A、B取交</span>
+C = A ~= B; <span class="hljs-comment">% A、B的不同元素</span>
+C = xor(A, B); <span class="hljs-comment">% any(A), all(A)同</span>
+
+<span class="hljs-comment">% 矩阵修改</span>
+A(<span class="hljs-number">1</span>, :) = [<span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>]; <span class="hljs-comment">% A矩阵第1行变为0</span>
+A(<span class="hljs-number">1</span>, :) = [];      <span class="hljs-comment">% 通过赋空值的方式删除行</span>
+</div></code></pre>
+<h2 id="%E7%9F%A9%E9%98%B5%E7%9A%84%E7%BA%BF%E6%80%A7%E8%BF%90%E7%AE%97">矩阵的线性运算</h2>
+<pre class="hljs"><code><div>A = [<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>; <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span>; <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">9</span>]
+<span class="hljs-comment">% 求逆矩阵</span>
+A_inv = inv(A);   <span class="hljs-comment">% 若A是奇异矩阵（线性相关）或接近奇异矩阵，可能出错</span>
+A_pinv = pinv(A); <span class="hljs-comment">% 若A不存在逆矩阵时，求A的伪逆矩阵</span>
+
+<span class="hljs-comment">% 求行列式</span>
+A_det = det(A);   <span class="hljs-comment">% A需要是n阶方阵</span>
+
+<span class="hljs-comment">% 求矩阵的秩</span>
+A_rank = rank(A);
+
+<span class="hljs-comment">% 求矩阵的特征值与特征向量</span>
+A_lamda = eig(A);      <span class="hljs-comment">% A_lamda为A特征值构成的列向量</span>
+[V, A_lamda] = eig(A); <span class="hljs-comment">% V为特征向量构成的矩阵，A_lamda为对角化后的对角矩阵</span>
+
+<span class="hljs-comment">% 线性方程组求解</span>
+X = null(A);     <span class="hljs-comment">% 求解齐次线性方程组A</span>
+X = null(A,<span class="hljs-string">'r'</span>); <span class="hljs-comment">% 求解齐次线性方程组A的有理数形式</span>
+X = A \ b;
+</div></code></pre>
+
+</body>
+</html>
